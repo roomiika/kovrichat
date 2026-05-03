@@ -58,7 +58,7 @@ export default function RegisterPage() {
     <div className="min-h-screen flex items-center justify-center bg-background px-4">
       <div className="w-full max-w-sm space-y-8">
         <div className="flex flex-col items-center gap-4">
-          <Image src="/logo.png" alt="Kovrichat" width={80} height={80} className="rounded-xl" />
+          <Image src="/logo.png" alt="Kovrichat" width={120} height={120} />
           <div className="text-center">
             <h1 className="text-2xl font-semibold text-foreground">Criar conta</h1>
             <p className="text-sm text-muted-foreground mt-1">Comece gratuitamente</p>
