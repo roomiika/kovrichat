@@ -7,7 +7,15 @@
       "Bash(npx tsc *)",
       "Bash(git init *)",
       "Bash(git add *)",
-      "Bash(git commit *)"
+      "Bash(git commit *)",
+      "Bash(git remote *)",
+      "Bash(git branch *)",
+      "Bash(git push *)",
+      "Bash(node *)",
+      "Bash(mkdir -p \"C:/Claude Code/Kovrichat/public\")",
+      "Bash(touch \"C:/Claude Code/Kovrichat/public/.gitkeep\")",
+      "Bash(cp \"c:/Users/roomi/OneDrive/Área de Trabalho/LogoHorizontalfundopreto.png\" \"C:/Claude Code/Kovrichat/public/logo-horizontal.png\")",
+      "Bash(cp \"c:/Users/roomi/OneDrive/Área de Trabalho/Logofundopreto.png\" \"C:/Claude Code/Kovrichat/public/logo.png\")"
     ]
   }
 }
