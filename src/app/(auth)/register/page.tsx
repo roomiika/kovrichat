@@ -22,26 +22,35 @@ export default function RegisterPage() {
     setError('')
     setLoading(true)
 
-    const res = await fetch('/api/register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(form),
-    })
+    try {
+      const res = await fetch('/api/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      })
 
-    const data = await res.json()
+      const data = await res.json()
 
-    if (!res.ok) {
-      setError(data.error || 'Erro ao criar conta')
+      if (!res.ok) {
+        setError(data.error || 'Erro ao criar conta')
+        setLoading(false)
+        return
+      }
+
+      // Conta criada — faz login automático
+      try {
+        const result = await loginAction(form.email, form.password)
+        if (result?.error) {
+          window.location.href = '/login'
+        }
+        // sucesso: server action redireciona via NEXT_REDIRECT
+      } catch {
+        window.location.href = '/login'
+      }
+    } catch {
+      setError('Erro de conexão. Tente novamente.')
       setLoading(false)
-      return
     }
-
-    const result = await loginAction(form.email, form.password)
-    if (result?.error) {
-      setError('Conta criada! Faça login para continuar.')
-      setLoading(false)
-    }
-    // Se sucesso, server action redireciona
   }
 
   return (
