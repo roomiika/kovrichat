@@ -17,9 +17,10 @@ export type KanbanStage = {
 interface Props {
   stage: KanbanStage
   onAddCard: (stageId: string) => void
+  onCardClick: (id: string) => void
 }
 
-export default function KanbanColumn({ stage, onAddCard }: Props) {
+export default function KanbanColumn({ stage, onAddCard, onCardClick }: Props) {
   const { setNodeRef, isOver } = useDroppable({ id: stage.id })
 
   const ids = stage.opportunities.map((o) => o.id)
@@ -54,7 +55,7 @@ export default function KanbanColumn({ stage, onAddCard }: Props) {
           )}
         >
           {stage.opportunities.map((opp) => (
-            <KanbanCard key={opp.id} opportunity={opp} />
+            <KanbanCard key={opp.id} opportunity={opp} onClick={() => onCardClick(opp.id)} />
           ))}
 
           {stage.opportunities.length === 0 && (

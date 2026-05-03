@@ -20,6 +20,7 @@ import Link from 'next/link'
 import KanbanColumn, { type KanbanStage } from './KanbanColumn'
 import KanbanCard, { type KanbanOpportunity } from './KanbanCard'
 import CreateOpportunityModal from './CreateOpportunityModal'
+import OpportunityDetailModal from './OpportunityDetailModal'
 
 interface Props {
   pipelineId: string
@@ -31,6 +32,7 @@ export default function KanbanBoard({ pipelineId }: Props) {
   const stagesRef = useRef(stages)
   const [activeOp, setActiveOp] = useState<KanbanOpportunity | null>(null)
   const [modal, setModal] = useState<{ stageId: string } | null>(null)
+  const [detailId, setDetailId] = useState<string | null>(null)
 
   const { data, isLoading } = useQuery({
     queryKey: ['pipeline', pipelineId],
@@ -189,6 +191,7 @@ export default function KanbanBoard({ pipelineId }: Props) {
                 key={stage.id}
                 stage={stage}
                 onAddCard={(stageId) => setModal({ stageId })}
+                onCardClick={(id) => setDetailId(id)}
               />
             ))}
 
@@ -208,6 +211,16 @@ export default function KanbanBoard({ pipelineId }: Props) {
           pipelineId={pipelineId}
           onClose={() => setModal(null)}
           onCreated={handleOpCreated}
+        />
+      )}
+
+      {detailId && (
+        <OpportunityDetailModal
+          opportunityId={detailId}
+          pipelineId={pipelineId}
+          stages={stages}
+          onClose={() => setDetailId(null)}
+          onDeleted={() => setDetailId(null)}
         />
       )}
     </div>

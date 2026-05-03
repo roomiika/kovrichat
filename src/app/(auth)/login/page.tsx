@@ -11,7 +11,7 @@ import { Label } from '@/components/ui/label'
 
 function LoginForm() {
   const searchParams = useSearchParams()
-  const callbackUrl = searchParams.get('callbackUrl') || '/pipelines'
+  const callbackUrl = searchParams.get('callbackUrl') || '/'
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
