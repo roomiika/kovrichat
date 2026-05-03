@@ -4,6 +4,7 @@ import { prisma } from '@/lib/prisma'
 export async function GET() {
   const checks: Record<string, string> = {
     status: 'ok',
+    build: 'v5',
     auth_secret: process.env.AUTH_SECRET
       ? 'set'
       : process.env.NEXTAUTH_SECRET
