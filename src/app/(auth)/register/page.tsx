@@ -1,16 +1,14 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { signIn } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { loginAction } from '@/actions/auth'
 
 export default function RegisterPage() {
-  const router = useRouter()
   const [form, setForm] = useState({ name: '', email: '', password: '', organizationName: '' })
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
@@ -38,66 +36,49 @@ export default function RegisterPage() {
       return
     }
 
-    const result = await signIn('credentials', {
-      email: form.email,
-      password: form.password,
-      redirect: false,
-    })
-
-    setLoading(false)
-
+    const result = await loginAction(form.email, form.password)
     if (result?.error) {
-      setError('Conta criada, mas erro ao entrar. Tente fazer login.')
-      return
+      setError('Conta criada! Faça login para continuar.')
+      setLoading(false)
     }
-
-    window.location.href = '/pipelines'
+    // Se sucesso, server action redireciona
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background px-4">
+    <div className="min-h-screen flex items-center justify-center bg-white px-4">
       <div className="w-full max-w-sm space-y-8">
         <div className="flex flex-col items-center gap-4">
           <Image src="/logo.png" alt="Kovrichat" width={120} height={120} />
           <div className="text-center">
-            <h1 className="text-2xl font-semibold text-foreground">Criar conta</h1>
-            <p className="text-sm text-muted-foreground mt-1">Comece gratuitamente</p>
+            <h1 className="text-2xl font-semibold text-gray-900">Criar conta</h1>
+            <p className="text-sm text-gray-500 mt-1">Comece gratuitamente</p>
           </div>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-1.5">
-            <Label htmlFor="name">Seu nome</Label>
-            <Input id="name" name="name" placeholder="João Silva" value={form.name} onChange={handleChange} required />
+            <Label htmlFor="name" className="text-gray-700">Seu nome</Label>
+            <Input id="name" name="name" placeholder="João Silva" value={form.name} onChange={handleChange} required className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400" />
           </div>
-
           <div className="space-y-1.5">
-            <Label htmlFor="organizationName">Nome da empresa</Label>
-            <Input id="organizationName" name="organizationName" placeholder="Minha Empresa" value={form.organizationName} onChange={handleChange} required />
+            <Label htmlFor="organizationName" className="text-gray-700">Nome da empresa</Label>
+            <Input id="organizationName" name="organizationName" placeholder="Minha Empresa" value={form.organizationName} onChange={handleChange} required className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400" />
           </div>
-
           <div className="space-y-1.5">
-            <Label htmlFor="email">Email</Label>
-            <Input id="email" name="email" type="email" placeholder="seu@email.com" value={form.email} onChange={handleChange} required />
+            <Label htmlFor="email" className="text-gray-700">Email</Label>
+            <Input id="email" name="email" type="email" placeholder="seu@email.com" value={form.email} onChange={handleChange} required className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400" />
           </div>
-
           <div className="space-y-1.5">
-            <Label htmlFor="password">Senha</Label>
-            <Input id="password" name="password" type="password" placeholder="Mínimo 8 caracteres" value={form.password} onChange={handleChange} required />
+            <Label htmlFor="password" className="text-gray-700">Senha</Label>
+            <Input id="password" name="password" type="password" placeholder="Mínimo 8 caracteres" value={form.password} onChange={handleChange} required className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400" />
           </div>
-
-          {error && <p className="text-sm text-destructive">{error}</p>}
-
-          <Button type="submit" className="w-full" loading={loading}>
-            Criar conta
-          </Button>
+          {error && <p className="text-sm text-red-600">{error}</p>}
+          <Button type="submit" className="w-full" loading={loading}>Criar conta</Button>
         </form>
 
-        <p className="text-center text-sm text-muted-foreground">
+        <p className="text-center text-sm text-gray-500">
           Já tem conta?{' '}
-          <Link href="/login" className="text-primary hover:underline font-medium">
-            Entrar
-          </Link>
+          <Link href="/login" className="text-primary hover:underline font-medium">Entrar</Link>
         </p>
       </div>
     </div>
