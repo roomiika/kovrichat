@@ -25,13 +25,17 @@ function LoginForm() {
     setError('')
     setLoading(true)
 
-    const result = await loginAction(email, password)
-
-    if (result?.error) {
-      setError(result.error)
+    try {
+      const result = await loginAction(email, password)
+      if (result?.error) {
+        setError(result.error)
+        setLoading(false)
+      }
+      // success → server action throws NEXT_REDIRECT, page navigates away
+    } catch {
+      setError('Erro inesperado. Tente novamente.')
       setLoading(false)
     }
-    // Se sucesso, o server action redireciona automaticamente
   }
 
   async function handleGoogle() {
