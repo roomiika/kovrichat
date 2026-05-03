@@ -1,8 +1,7 @@
-import { readFileSync } from 'fs'
-import { join } from 'path'
-
 export async function register() {
   if (process.env.NEXT_RUNTIME === 'nodejs') {
+    const { readFileSync } = await import('fs')
+    const { join } = await import('path')
     const { prisma } = await import('@/lib/prisma')
 
     try {
