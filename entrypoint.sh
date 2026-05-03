@@ -1,3 +1,3 @@
 #!/bin/sh
-node ./node_modules/prisma/build/index.js db push --skip-generate --accept-data-loss
+node ./node_modules/prisma/build/index.js migrate deploy
 exec node server.js
