@@ -24,12 +24,7 @@ COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
-COPY --from=deps /app/node_modules/prisma ./node_modules/prisma
 COPY --from=deps /app/node_modules/@prisma ./node_modules/@prisma
-COPY --from=deps /app/node_modules/effect ./node_modules/effect
-COPY --from=deps /app/node_modules/c12 ./node_modules/c12
-COPY --from=deps /app/node_modules/deepmerge-ts ./node_modules/deepmerge-ts
-COPY --from=deps /app/node_modules/empathic ./node_modules/empathic
 COPY --from=builder /app/prisma ./prisma
 COPY --chown=nextjs:nodejs entrypoint.sh ./entrypoint.sh
 RUN chmod +x ./entrypoint.sh
