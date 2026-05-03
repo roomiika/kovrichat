@@ -38,11 +38,20 @@ export default function RegisterPage() {
       return
     }
 
-    await signIn('credentials', {
+    const result = await signIn('credentials', {
       email: form.email,
       password: form.password,
-      callbackUrl: '/pipelines',
+      redirect: false,
     })
+
+    setLoading(false)
+
+    if (result?.error) {
+      setError('Conta criada, mas erro ao entrar. Tente fazer login.')
+      return
+    }
+
+    router.push('/pipelines')
   }
 
   return (
