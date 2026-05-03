@@ -8,7 +8,6 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { loginAction } from '@/actions/auth'
 
 function LoginForm() {
   const searchParams = useSearchParams()
@@ -26,14 +25,22 @@ function LoginForm() {
     setLoading(true)
 
     try {
-      const result = await loginAction(email, password)
-      if (result?.error) {
-        setError(result.error)
+      const result = await signIn('credentials', {
+        email,
+        password,
+        redirect: false,
+      })
+
+      if (!result || result.error) {
+        setError('Email ou senha incorretos')
         setLoading(false)
+        return
       }
-      // success → server action throws NEXT_REDIRECT, page navigates away
-    } catch {
-      setError('Erro inesperado. Tente novamente.')
+
+      window.location.href = callbackUrl
+    } catch (err) {
+      console.error('login error:', err)
+      setError('Erro ao conectar. Tente novamente.')
       setLoading(false)
     }
   }
