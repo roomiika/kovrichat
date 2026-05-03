@@ -30,7 +30,7 @@ function LoginForm() {
       setError('Email ou senha incorretos')
       return
     }
-    router.push(callbackUrl)
+    window.location.href = callbackUrl
   }
 
   async function handleGoogle() {

@@ -51,7 +51,7 @@ export default function RegisterPage() {
       return
     }
 
-    router.push('/pipelines')
+    window.location.href = '/pipelines'
   }
 
   return (
