@@ -52,6 +52,7 @@ export async function POST(req: NextRequest) {
         pipelineId: parsed.data.pipelineId,
         contactId: contact.id,
         order,
+        stageEnteredAt: new Date(),
       },
       include: { contact: { select: { id: true, name: true, phone: true } } },
     })

@@ -185,6 +185,7 @@ model Opportunity {
   wonAt          DateTime?
   lostAt         DateTime?
   lostReason     String?
+  stageEnteredAt DateTime?
   createdAt      DateTime          @default(now())
   updatedAt      DateTime          @updatedAt
 

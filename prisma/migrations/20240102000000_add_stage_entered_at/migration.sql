@@ -1,0 +1,1 @@
+ALTER TABLE "Opportunity" ADD COLUMN IF NOT EXISTS "stageEnteredAt" TIMESTAMP(3);

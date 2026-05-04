@@ -12,6 +12,8 @@ export type KanbanOpportunity = {
   order: number
   stageId: string
   status: string
+  stageEnteredAt: string | null
+  createdAt: string
   contact: { id: string; name: string; phone?: string | null }
 }
 
@@ -19,6 +21,10 @@ interface Props {
   opportunity: KanbanOpportunity
   overlay?: boolean
   onClick?: () => void
+}
+
+function daysAgo(dateStr: string): number {
+  return Math.floor((Date.now() - new Date(dateStr).getTime()) / 86400000)
 }
 
 export default function KanbanCard({ opportunity, overlay, onClick }: Props) {
@@ -35,6 +41,10 @@ export default function KanbanCard({ opportunity, overlay, onClick }: Props) {
     data: { type: 'card', opportunity },
   })
 
+  const days = daysAgo(opportunity.stageEnteredAt ?? opportunity.createdAt)
+  const daysColor =
+    days >= 15 ? 'text-red-400' : days >= 8 ? 'text-amber-400' : 'text-zinc-600'
+
   return (
     <div
       ref={setNodeRef}
@@ -49,7 +59,7 @@ export default function KanbanCard({ opportunity, overlay, onClick }: Props) {
       )}
     >
       <div className="flex items-start gap-1.5">
-        {/* Drag handle — only activates DnD */}
+        {/* Drag handle */}
         <div
           ref={setActivatorNodeRef}
           {...listeners}
@@ -60,9 +70,18 @@ export default function KanbanCard({ opportunity, overlay, onClick }: Props) {
         </div>
 
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-medium text-white leading-snug mb-2 line-clamp-2">
-            {opportunity.title}
-          </p>
+          {/* Title row with days badge */}
+          <div className="flex items-start justify-between gap-2 mb-2">
+            <p className="text-sm font-medium text-white leading-snug line-clamp-2 flex-1">
+              {opportunity.title}
+            </p>
+            {days > 0 && (
+              <span className={cn('text-xs shrink-0 mt-0.5 tabular-nums', daysColor)}>
+                {days}d
+              </span>
+            )}
+          </div>
+
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-1.5 text-xs text-zinc-400 min-w-0">
               <User className="h-3 w-3 shrink-0" />

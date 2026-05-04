@@ -73,6 +73,19 @@ export default function OpportunityDetailModal({
     },
   })
 
+  const statusMutation = useMutation({
+    mutationFn: (body: Record<string, unknown>) =>
+      fetch(`/api/opportunities/${opportunityId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      }).then((r) => r.json()),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['pipeline', pipelineId] })
+      onClose()
+    },
+  })
+
   const del = useMutation({
     mutationFn: () =>
       fetch(`/api/opportunities/${opportunityId}`, { method: 'DELETE' }).then((r) => r.json()),
@@ -94,14 +107,14 @@ export default function OpportunityDetailModal({
   }
 
   function confirmLost() {
-    patch.mutate({ status: 'LOST', lostReason: lostReason.trim() || undefined })
+    statusMutation.mutate({ status: 'LOST', lostReason: lostReason.trim() || undefined })
     setShowLostInput(false)
     setLostReason('')
   }
 
   return (
     <div className="fixed inset-0 z-50 flex justify-end">
-      <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
+      <div className="absolute inset-0 bg-black/30" onClick={onClose} />
 
       <div className="relative z-10 flex flex-col w-full max-w-lg bg-zinc-950 border-l border-white/10 h-full">
         {isLoading || !opp ? (
@@ -129,8 +142,8 @@ export default function OpportunityDetailModal({
                 {opp.status === 'OPEN' && (
                   <>
                     <button
-                      onClick={() => patch.mutate({ status: 'WON' })}
-                      disabled={patch.isPending}
+                      onClick={() => statusMutation.mutate({ status: 'WON' })}
+                      disabled={statusMutation.isPending}
                       className="flex items-center gap-1.5 rounded-lg bg-emerald-500/10 px-2.5 py-1.5 text-xs font-medium text-emerald-400 hover:bg-emerald-500/20 transition-colors disabled:opacity-50"
                     >
                       <CheckCircle2 className="h-3.5 w-3.5" />
@@ -138,7 +151,7 @@ export default function OpportunityDetailModal({
                     </button>
                     <button
                       onClick={() => setShowLostInput(true)}
-                      disabled={patch.isPending}
+                      disabled={statusMutation.isPending}
                       className="flex items-center gap-1.5 rounded-lg bg-red-500/10 px-2.5 py-1.5 text-xs font-medium text-red-400 hover:bg-red-500/20 transition-colors disabled:opacity-50"
                     >
                       <XCircle className="h-3.5 w-3.5" />
