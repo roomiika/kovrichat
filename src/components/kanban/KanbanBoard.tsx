@@ -190,8 +190,17 @@ export default function KanbanBoard({ pipelineId }: Props) {
               <KanbanColumn
                 key={stage.id}
                 stage={stage}
+                pipelineId={pipelineId}
                 onAddCard={(stageId) => setModal({ stageId })}
                 onCardClick={(id) => setDetailId(id)}
+                onStageRenamed={(stageId, name) =>
+                  setStages((prev) =>
+                    prev.map((s) => (s.id === stageId ? { ...s, name } : s)),
+                  )
+                }
+                onStageDeleted={(stageId) =>
+                  setStages((prev) => prev.filter((s) => s.id !== stageId))
+                }
               />
             ))}
 
