@@ -224,12 +224,12 @@ function ActivityRow({
   const colors: Record<string, string> = {
     STAGE_CHANGED: 'bg-blue-500/15 text-blue-400',
     STATUS_CHANGED: 'bg-emerald-500/15 text-emerald-400',
-    NOTE_ADDED: 'bg-zinc-700 text-zinc-300',
+    NOTE_ADDED: 'bg-muted text-muted-foreground',
     CREATED: 'bg-primary/15 text-primary',
   }
 
   const icon = icons[activity.type] ?? <MessageSquare className="h-3 w-3" />
-  const color = colors[activity.type] ?? 'bg-zinc-700 text-zinc-300'
+  const color = colors[activity.type] ?? 'bg-muted text-muted-foreground'
 
   return (
     <div className="flex items-start gap-3 px-4 py-3">

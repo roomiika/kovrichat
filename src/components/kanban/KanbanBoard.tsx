@@ -166,12 +166,12 @@ export default function KanbanBoard({ pipelineId }: Props) {
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="flex items-center gap-3 px-6 py-4 border-b border-white/5 shrink-0">
-        <Link href="/pipelines" className="text-zinc-400 hover:text-white transition-colors">
+      <div className="flex items-center gap-3 px-6 py-4 border-b border-border shrink-0">
+        <Link href="/pipelines" className="text-muted-foreground hover:text-foreground transition-colors">
           <ArrowLeft className="h-4 w-4" />
         </Link>
-        <h1 className="text-lg font-semibold text-white">{data?.name}</h1>
-        <span className="text-xs text-zinc-500">
+        <h1 className="text-lg font-semibold text-foreground">{data?.name}</h1>
+        <span className="text-xs text-muted-foreground">
           {stages.reduce((acc, s) => acc + s.opportunities.length, 0)} cards
         </span>
       </div>
@@ -276,7 +276,7 @@ function AddStageButton({
             if (e.key === 'Escape') { setEditing(false); setName('') }
           }}
           placeholder="Nome da etapa"
-          className="w-full rounded-lg bg-zinc-800 border border-white/10 px-3 py-2 text-sm text-white placeholder:text-zinc-500 outline-none focus:border-primary mb-2"
+          className="w-full rounded-lg bg-card border border-border px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:border-primary mb-2"
         />
         <div className="flex gap-2">
           <button
@@ -288,7 +288,7 @@ function AddStageButton({
           </button>
           <button
             onClick={() => { setEditing(false); setName('') }}
-            className="flex-1 rounded-lg border border-white/10 px-3 py-1.5 text-xs text-zinc-400 hover:text-white"
+            className="flex-1 rounded-lg border border-border px-3 py-1.5 text-xs text-muted-foreground hover:text-foreground"
           >
             Cancelar
           </button>
@@ -300,7 +300,7 @@ function AddStageButton({
   return (
     <button
       onClick={() => setEditing(true)}
-      className="flex items-center gap-2 w-72 shrink-0 rounded-xl border border-dashed border-white/10 px-4 py-3 text-sm text-zinc-500 hover:text-zinc-300 hover:border-white/20 transition-colors"
+      className="flex items-center gap-2 w-72 shrink-0 rounded-xl border border-dashed border-border px-4 py-3 text-sm text-muted-foreground hover:text-foreground hover:border-primary/40 transition-colors"
     >
       <Plus className="h-4 w-4" />
       Nova etapa

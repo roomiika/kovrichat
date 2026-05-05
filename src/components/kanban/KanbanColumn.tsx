@@ -85,13 +85,13 @@ export default function KanbanColumn({
                 if (e.key === 'Enter') commitRename()
                 if (e.key === 'Escape') { setRenaming(false); setDraft(stage.name) }
               }}
-              className="flex-1 bg-transparent border-b border-primary text-sm font-medium text-zinc-100 outline-none min-w-0"
+              className="flex-1 bg-transparent border-b border-primary text-sm font-medium text-foreground outline-none min-w-0"
             />
           ) : (
-            <span className="text-sm font-medium text-zinc-100 truncate">{stage.name}</span>
+            <span className="text-sm font-medium text-foreground truncate">{stage.name}</span>
           )}
 
-          <span className="text-xs text-zinc-500 bg-zinc-800 px-1.5 py-0.5 rounded-full leading-none shrink-0">
+          <span className="text-xs text-muted-foreground bg-muted px-1.5 py-0.5 rounded-full leading-none shrink-0">
             {stage.opportunities.length}
           </span>
         </div>
@@ -99,7 +99,7 @@ export default function KanbanColumn({
         <div className="flex items-center gap-0.5 shrink-0">
           <button
             onClick={() => onAddCard(stage.id)}
-            className="p-1 rounded-md text-zinc-500 hover:text-zinc-200 hover:bg-white/5 transition-colors"
+            className="p-1 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
             title="Adicionar card"
           >
             <Plus className="h-4 w-4" />
@@ -108,21 +108,21 @@ export default function KanbanColumn({
           <div className="relative" ref={menuRef}>
             <button
               onClick={() => setMenuOpen((o) => !o)}
-              className="p-1 rounded-md text-zinc-500 hover:text-zinc-200 hover:bg-white/5 transition-colors"
+              className="p-1 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
             >
               <MoreHorizontal className="h-4 w-4" />
             </button>
             {menuOpen && (
-              <div className="absolute right-0 top-7 z-20 w-36 rounded-lg border border-white/10 bg-zinc-900 shadow-xl py-1">
+              <div className="absolute right-0 top-7 z-20 w-36 rounded-lg border border-border bg-card shadow-xl py-1">
                 <button
                   onClick={() => { setMenuOpen(false); setDraft(stage.name); setRenaming(true) }}
-                  className="flex items-center gap-2 w-full px-3 py-2 text-sm text-zinc-200 hover:bg-white/5 transition-colors"
+                  className="flex items-center gap-2 w-full px-3 py-2 text-sm text-foreground hover:bg-accent transition-colors"
                 >
                   <Pencil className="h-3.5 w-3.5" /> Renomear
                 </button>
                 <button
                   onClick={() => { setMenuOpen(false); handleDelete() }}
-                  className="flex items-center gap-2 w-full px-3 py-2 text-sm text-red-400 hover:bg-red-400/10 transition-colors"
+                  className="flex items-center gap-2 w-full px-3 py-2 text-sm text-red-500 dark:text-red-400 hover:bg-red-400/10 transition-colors"
                 >
                   <Trash2 className="h-3.5 w-3.5" /> Deletar
                 </button>
@@ -137,7 +137,7 @@ export default function KanbanColumn({
           ref={setNodeRef}
           className={cn(
             'flex flex-col gap-2 min-h-24 rounded-xl p-2 transition-colors',
-            'bg-zinc-800/50',
+            'bg-muted/40',
             isOver && 'bg-primary/5 ring-1 ring-primary/30',
           )}
         >
@@ -146,7 +146,7 @@ export default function KanbanColumn({
           ))}
 
           {stage.opportunities.length === 0 && (
-            <div className="flex items-center justify-center h-16 text-xs text-zinc-600">
+            <div className="flex items-center justify-center h-16 text-xs text-muted-foreground/60">
               Arraste cards aqui
             </div>
           )}
@@ -154,7 +154,7 @@ export default function KanbanColumn({
       </SortableContext>
 
       {total > 0 && (
-        <p className="text-xs text-zinc-500 mt-1.5 px-0.5 text-right">
+        <p className="text-xs text-muted-foreground mt-1.5 px-0.5 text-right">
           {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(total)}
         </p>
       )}

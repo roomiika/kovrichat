@@ -223,31 +223,31 @@ function CreateContactModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4" onClick={(e) => e.target === e.currentTarget && onClose()}>
-      <div className="w-full max-w-sm rounded-xl bg-zinc-900 border border-white/10 shadow-2xl">
-        <div className="flex items-center justify-between p-5 border-b border-white/10">
-          <h2 className="text-base font-semibold text-white">Novo contato</h2>
-          <button onClick={onClose} className="text-zinc-400 hover:text-white"><X className="h-5 w-5" /></button>
+      <div className="w-full max-w-sm rounded-xl bg-card border border-border shadow-2xl">
+        <div className="flex items-center justify-between p-5 border-b border-border">
+          <h2 className="text-base font-semibold text-foreground">Novo contato</h2>
+          <button onClick={onClose} className="text-muted-foreground hover:text-foreground"><X className="h-5 w-5" /></button>
         </div>
         <div className="p-5 space-y-3">
           <div className="space-y-1.5">
-            <Label className="text-zinc-300">Nome *</Label>
-            <Input autoFocus value={form.name} onChange={field('name')} placeholder="Nome completo" className="bg-zinc-800 border-white/10 text-white placeholder:text-zinc-500" />
+            <Label className="text-foreground">Nome *</Label>
+            <Input autoFocus value={form.name} onChange={field('name')} placeholder="Nome completo" className="bg-background border-border text-foreground placeholder:text-muted-foreground" />
           </div>
           <div className="space-y-1.5">
-            <Label className="text-zinc-300">Telefone</Label>
-            <Input value={form.phone} onChange={field('phone')} placeholder="(11) 99999-9999" className="bg-zinc-800 border-white/10 text-white placeholder:text-zinc-500" />
+            <Label className="text-foreground">Telefone</Label>
+            <Input value={form.phone} onChange={field('phone')} placeholder="(11) 99999-9999" className="bg-background border-border text-foreground placeholder:text-muted-foreground" />
           </div>
           <div className="space-y-1.5">
-            <Label className="text-zinc-300">Email</Label>
-            <Input type="email" value={form.email} onChange={field('email')} placeholder="email@exemplo.com" className="bg-zinc-800 border-white/10 text-white placeholder:text-zinc-500" />
+            <Label className="text-foreground">Email</Label>
+            <Input type="email" value={form.email} onChange={field('email')} placeholder="email@exemplo.com" className="bg-background border-border text-foreground placeholder:text-muted-foreground" />
           </div>
           <div className="space-y-1.5">
-            <Label className="text-zinc-300">Empresa</Label>
-            <Input value={form.company} onChange={field('company')} placeholder="Nome da empresa" className="bg-zinc-800 border-white/10 text-white placeholder:text-zinc-500" />
+            <Label className="text-foreground">Empresa</Label>
+            <Input value={form.company} onChange={field('company')} placeholder="Nome da empresa" className="bg-background border-border text-foreground placeholder:text-muted-foreground" />
           </div>
           {error && <p className="text-sm text-red-400">{error}</p>}
           <div className="flex gap-3 pt-1">
-            <Button type="button" variant="outline" className="flex-1 border-white/10 text-zinc-300 hover:bg-white/5" onClick={onClose}>Cancelar</Button>
+            <Button type="button" variant="outline" className="flex-1 border-border text-muted-foreground hover:bg-muted" onClick={onClose}>Cancelar</Button>
             <Button className="flex-1" loading={mutation.isPending} onClick={() => { if (!form.name.trim()) { setError('Nome obrigatório'); return } setError(''); mutation.mutate() }}>Criar</Button>
           </div>
         </div>
@@ -304,26 +304,26 @@ function ContactDetailPanel({
     <>
     <div className="fixed inset-0 z-50 flex justify-end">
       <div className="absolute inset-0 bg-black/30" onClick={onClose} />
-      <div className="relative z-10 flex flex-col w-full max-w-md bg-zinc-950 border-l border-white/10 h-full">
+      <div className="relative z-10 flex flex-col w-full max-w-md bg-white dark:bg-zinc-900 border-l border-border h-full">
         {isLoading || !data ? (
           <div className="flex items-center justify-center flex-1">
-            <Loader2 className="h-6 w-6 animate-spin text-zinc-500" />
+            <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
           </div>
         ) : (
           <>
             {/* Header */}
-            <div className="flex items-center gap-3 p-5 border-b border-white/10 shrink-0">
-              <button onClick={onClose} className="text-zinc-500 hover:text-white transition-colors">
+            <div className="flex items-center gap-3 p-5 border-b border-border shrink-0">
+              <button onClick={onClose} className="text-muted-foreground hover:text-foreground transition-colors">
                 <X className="h-5 w-5" />
               </button>
               <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary shrink-0">
                 {data.name.charAt(0).toUpperCase()}
               </div>
-              <EditableText value={data.name} onSave={(v) => save('name', v)} className="flex-1 text-base font-semibold text-white" />
+              <EditableText value={data.name} onSave={(v) => save('name', v)} className="flex-1 text-base font-semibold text-foreground" />
               <button
                 onClick={() => { if (confirm('Deletar este contato? As oportunidades serão mantidas.')) del.mutate() }}
                 disabled={del.isPending}
-                className="p-1.5 text-zinc-600 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-colors"
+                className="p-1.5 text-muted-foreground hover:text-red-500 dark:hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-colors"
               >
                 <Trash2 className="h-4 w-4" />
               </button>
@@ -331,39 +331,39 @@ function ContactDetailPanel({
 
             <div className="flex-1 overflow-y-auto">
               {/* Fields */}
-              <div className="p-5 space-y-3.5 border-b border-white/10">
+              <div className="p-5 space-y-3.5 border-b border-border">
                 <FieldRow icon={<Phone className="h-3.5 w-3.5" />} label="Telefone">
-                  <EditableText value={data.phone ?? ''} placeholder="Adicionar telefone" onSave={(v) => save('phone', v)} className="flex-1 text-sm text-white" />
+                  <EditableText value={data.phone ?? ''} placeholder="Adicionar telefone" onSave={(v) => save('phone', v)} className="flex-1 text-sm text-foreground" />
                 </FieldRow>
                 <FieldRow icon={<Mail className="h-3.5 w-3.5" />} label="Email">
-                  <EditableText value={data.email ?? ''} placeholder="Adicionar email" onSave={(v) => save('email', v)} className="flex-1 text-sm text-white" />
+                  <EditableText value={data.email ?? ''} placeholder="Adicionar email" onSave={(v) => save('email', v)} className="flex-1 text-sm text-foreground" />
                 </FieldRow>
                 <FieldRow icon={<Building2 className="h-3.5 w-3.5" />} label="Empresa">
-                  <EditableText value={data.company ?? ''} placeholder="Adicionar empresa" onSave={(v) => save('company', v)} className="flex-1 text-sm text-white" />
+                  <EditableText value={data.company ?? ''} placeholder="Adicionar empresa" onSave={(v) => save('company', v)} className="flex-1 text-sm text-foreground" />
                 </FieldRow>
               </div>
 
               {/* Opportunities */}
               <div className="p-5">
-                <p className="text-xs font-medium text-zinc-400 mb-3">
+                <p className="text-xs font-medium text-foreground mb-3">
                   Oportunidades ({data.opportunities.length})
                 </p>
                 {data.opportunities.length === 0 ? (
-                  <p className="text-xs text-zinc-600">Nenhuma oportunidade.</p>
+                  <p className="text-xs text-muted-foreground">Nenhuma oportunidade.</p>
                 ) : (
                   <div className="space-y-2">
                     {data.opportunities.map((opp) => (
                       <button
                         key={opp.id}
                         onClick={() => setDetailOpp({ id: opp.id, pipelineId: opp.pipeline.id })}
-                        className="flex items-center gap-3 rounded-lg bg-zinc-900 border border-white/5 px-3 py-2.5 hover:border-white/15 transition-colors w-full text-left"
+                        className="flex items-center gap-3 rounded-lg bg-muted/50 border border-border px-3 py-2.5 hover:border-primary/40 transition-colors w-full text-left"
                       >
                         <StatusIcon status={opp.status} />
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-white truncate">{opp.title}</p>
+                          <p className="text-sm font-medium text-foreground truncate">{opp.title}</p>
                           <div className="flex items-center gap-2 mt-0.5">
                             <span className="h-1.5 w-1.5 rounded-full shrink-0" style={{ backgroundColor: opp.stage.color }} />
-                            <span className="text-xs text-zinc-500 truncate">{opp.pipeline.name} · {opp.stage.name}</span>
+                            <span className="text-xs text-muted-foreground truncate">{opp.pipeline.name} · {opp.stage.name}</span>
                           </div>
                         </div>
                         {opp.value && Number(opp.value) > 0 && (
@@ -398,15 +398,15 @@ function ContactDetailPanel({
 }
 
 function StatusIcon({ status }: { status: string }) {
-  if (status === 'WON') return <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" />
-  if (status === 'LOST') return <XCircle className="h-4 w-4 text-red-400 shrink-0" />
-  return <Circle className="h-4 w-4 text-zinc-500 shrink-0" />
+  if (status === 'WON') return <CheckCircle2 className="h-4 w-4 text-emerald-500 dark:text-emerald-400 shrink-0" />
+  if (status === 'LOST') return <XCircle className="h-4 w-4 text-red-500 dark:text-red-400 shrink-0" />
+  return <Circle className="h-4 w-4 text-muted-foreground shrink-0" />
 }
 
 function FieldRow({ icon, label, children }: { icon: React.ReactNode; label: string; children: React.ReactNode }) {
   return (
     <div className="flex items-center gap-3">
-      <div className="flex items-center gap-1.5 w-24 shrink-0 text-zinc-500">
+      <div className="flex items-center gap-1.5 w-24 shrink-0 text-muted-foreground">
         {icon}
         <span className="text-xs">{label}</span>
       </div>
@@ -437,7 +437,7 @@ function EditableText({
         onChange={(e) => setDraft(e.target.value)}
         onBlur={commit}
         onKeyDown={(e) => { if (e.key === 'Enter') commit(); if (e.key === 'Escape') { setEditing(false); setDraft(value) } }}
-        className={cn(className, 'bg-zinc-800 border border-primary/50 rounded px-2 py-0.5 outline-none w-full')}
+        className={cn(className, 'bg-gray-50 dark:bg-zinc-800 border border-primary/50 rounded px-2 py-0.5 outline-none w-full')}
       />
     )
   }
@@ -445,7 +445,7 @@ function EditableText({
   return (
     <button
       onClick={() => { setDraft(value); setEditing(true) }}
-      className={cn(className, 'text-left hover:bg-white/5 rounded px-2 py-0.5 transition-colors w-full', !value && 'text-zinc-600')}
+      className={cn(className, 'text-left hover:bg-black/5 dark:hover:bg-white/5 rounded px-2 py-0.5 transition-colors w-full', !value && 'text-muted-foreground')}
     >
       {value || placeholder}
     </button>

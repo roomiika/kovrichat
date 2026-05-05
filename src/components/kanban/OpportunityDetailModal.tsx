@@ -137,18 +137,18 @@ export default function OpportunityDetailModal({
     <div className="fixed inset-0 z-50 flex justify-end">
       <div className="absolute inset-0 bg-black/30" onClick={onClose} />
 
-      <div className="relative z-10 flex flex-col w-full max-w-lg bg-zinc-700 border-l border-white/20 h-full">
+      <div className="relative z-10 flex flex-col w-full max-w-lg bg-white dark:bg-zinc-700 border-l border-border h-full">
         {isLoading || !opp ? (
           <div className="flex items-center justify-center flex-1">
-            <Loader2 className="h-6 w-6 animate-spin text-zinc-500" />
+            <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
           </div>
         ) : (
           <>
             {/* Header */}
-            <div className="flex items-start gap-3 p-5 border-b border-white/15 shrink-0">
+            <div className="flex items-start gap-3 p-5 border-b border-border shrink-0">
               <button
                 onClick={onClose}
-                className="mt-0.5 shrink-0 text-zinc-500 hover:text-white transition-colors"
+                className="mt-0.5 shrink-0 text-muted-foreground hover:text-foreground transition-colors"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -156,7 +156,7 @@ export default function OpportunityDetailModal({
               <EditableText
                 value={opp.title}
                 onSave={(v) => save('title', v)}
-                className="flex-1 text-base font-semibold text-white"
+                className="flex-1 text-base font-semibold text-foreground"
               />
 
               <div className="flex items-center gap-1.5 shrink-0">
@@ -165,7 +165,7 @@ export default function OpportunityDetailModal({
                     <button
                       onClick={() => statusMutation.mutate({ status: 'WON' })}
                       disabled={statusMutation.isPending}
-                      className="flex items-center gap-1.5 rounded-lg bg-emerald-500/10 px-2.5 py-1.5 text-xs font-medium text-emerald-400 hover:bg-emerald-500/20 transition-colors disabled:opacity-50"
+                      className="flex items-center gap-1.5 rounded-lg bg-emerald-500/10 px-2.5 py-1.5 text-xs font-medium text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/20 transition-colors disabled:opacity-50"
                     >
                       <CheckCircle2 className="h-3.5 w-3.5" />
                       Ganho
@@ -173,7 +173,7 @@ export default function OpportunityDetailModal({
                     <button
                       onClick={() => setShowLostInput(true)}
                       disabled={statusMutation.isPending}
-                      className="flex items-center gap-1.5 rounded-lg bg-red-500/10 px-2.5 py-1.5 text-xs font-medium text-red-400 hover:bg-red-500/20 transition-colors disabled:opacity-50"
+                      className="flex items-center gap-1.5 rounded-lg bg-red-500/10 px-2.5 py-1.5 text-xs font-medium text-red-600 dark:text-red-400 hover:bg-red-500/20 transition-colors disabled:opacity-50"
                     >
                       <XCircle className="h-3.5 w-3.5" />
                       Perdido
@@ -187,8 +187,8 @@ export default function OpportunityDetailModal({
                       className={cn(
                         'rounded-full px-2.5 py-1 text-xs font-medium',
                         opp.status === 'WON'
-                          ? 'bg-emerald-500/15 text-emerald-400'
-                          : 'bg-red-500/15 text-red-400',
+                          ? 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400'
+                          : 'bg-red-500/15 text-red-600 dark:text-red-400',
                       )}
                     >
                       {opp.status === 'WON' ? 'Ganho' : 'Perdido'}
@@ -196,7 +196,7 @@ export default function OpportunityDetailModal({
                     <button
                       onClick={() => reopenMutation.mutate()}
                       disabled={reopenMutation.isPending}
-                      className="flex items-center gap-1.5 rounded-lg bg-zinc-600 px-2.5 py-1.5 text-xs font-medium text-zinc-200 hover:bg-zinc-500 transition-colors disabled:opacity-50"
+                      className="flex items-center gap-1.5 rounded-lg bg-secondary px-2.5 py-1.5 text-xs font-medium text-secondary-foreground hover:bg-secondary/80 transition-colors disabled:opacity-50"
                     >
                       Reabrir
                     </button>
@@ -208,7 +208,7 @@ export default function OpportunityDetailModal({
                     if (confirm('Deletar esta oportunidade?')) del.mutate()
                   }}
                   disabled={del.isPending}
-                  className="p-1.5 rounded-lg text-zinc-400 hover:text-red-400 hover:bg-red-400/10 transition-colors"
+                  className="p-1.5 rounded-lg text-muted-foreground hover:text-red-500 dark:hover:text-red-400 hover:bg-red-400/10 transition-colors"
                 >
                   <Trash2 className="h-4 w-4" />
                 </button>
@@ -217,8 +217,8 @@ export default function OpportunityDetailModal({
 
             {/* Lost reason */}
             {showLostInput && (
-              <div className="p-4 border-b border-white/15 bg-red-500/5 shrink-0">
-                <p className="text-xs text-zinc-300 mb-2">Motivo da perda (opcional)</p>
+              <div className="p-4 border-b border-border bg-red-500/5 shrink-0">
+                <p className="text-xs text-foreground mb-2">Motivo da perda (opcional)</p>
                 <div className="flex gap-2">
                   <input
                     autoFocus
@@ -229,17 +229,17 @@ export default function OpportunityDetailModal({
                       if (e.key === 'Escape') setShowLostInput(false)
                     }}
                     placeholder="Ex: Preço, prazo, concorrente..."
-                    className="flex-1 rounded-lg bg-zinc-600 border border-white/15 px-3 py-1.5 text-sm text-white placeholder:text-zinc-400 outline-none focus:border-primary"
+                    className="flex-1 rounded-lg bg-gray-50 dark:bg-zinc-600 border border-border px-3 py-1.5 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:border-primary"
                   />
                   <button
                     onClick={confirmLost}
-                    className="rounded-lg bg-red-500/20 px-3 py-1.5 text-xs font-medium text-red-400 hover:bg-red-500/30"
+                    className="rounded-lg bg-red-500/20 px-3 py-1.5 text-xs font-medium text-red-600 dark:text-red-400 hover:bg-red-500/30"
                   >
                     Confirmar
                   </button>
                   <button
                     onClick={() => setShowLostInput(false)}
-                    className="text-zinc-500 hover:text-zinc-300 text-xs px-2"
+                    className="text-muted-foreground hover:text-foreground text-xs px-2"
                   >
                     Cancelar
                   </button>
@@ -250,12 +250,12 @@ export default function OpportunityDetailModal({
             {/* Scrollable body */}
             <div className="flex-1 overflow-y-auto">
               {/* Fields */}
-              <div className="p-5 space-y-3.5 border-b border-white/15">
+              <div className="p-5 space-y-3.5 border-b border-border">
                 <FieldRow label="Etapa">
                   <select
                     value={opp.stageId}
                     onChange={(e) => save('stageId', e.target.value)}
-                    className="flex-1 rounded-lg bg-zinc-600 border border-white/15 px-2.5 py-1.5 text-sm text-white outline-none focus:border-primary"
+                    className="flex-1 rounded-lg bg-gray-50 dark:bg-zinc-600 border border-border px-2.5 py-1.5 text-sm text-foreground outline-none focus:border-primary"
                   >
                     {stages.map((s) => (
                       <option key={s.id} value={s.id}>
@@ -276,7 +276,7 @@ export default function OpportunityDetailModal({
                   <EditableText
                     value={opp.contact.name}
                     onSave={(v) => save('contactName', v)}
-                    className="flex-1 text-sm text-white"
+                    className="flex-1 text-sm text-foreground"
                   />
                 </FieldRow>
 
@@ -285,14 +285,14 @@ export default function OpportunityDetailModal({
                     value={opp.contact.phone ?? ''}
                     placeholder="Adicionar telefone"
                     onSave={(v) => save('contactPhone', v)}
-                    className="flex-1 text-sm text-white"
+                    className="flex-1 text-sm text-foreground"
                   />
                 </FieldRow>
               </div>
 
               {/* Add note */}
-              <div className="p-5 border-b border-white/15">
-                <p className="text-xs font-medium text-zinc-200 mb-2">Adicionar nota</p>
+              <div className="p-5 border-b border-border">
+                <p className="text-xs font-medium text-foreground mb-2">Adicionar nota</p>
                 <textarea
                   value={note}
                   onChange={(e) => setNote(e.target.value)}
@@ -301,7 +301,7 @@ export default function OpportunityDetailModal({
                   }}
                   placeholder="Escreva uma observação... (Ctrl+Enter para salvar)"
                   rows={3}
-                  className="w-full rounded-lg bg-zinc-600 border border-white/15 px-3 py-2 text-sm text-white placeholder:text-zinc-400 outline-none focus:border-primary resize-none"
+                  className="w-full rounded-lg bg-gray-50 dark:bg-zinc-600 border border-border px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:border-primary resize-none"
                 />
                 <div className="flex justify-end mt-2">
                   <button
@@ -316,7 +316,7 @@ export default function OpportunityDetailModal({
 
               {/* Activity log */}
               <div className="p-5">
-                <p className="text-xs font-medium text-zinc-200 mb-4">Atividade</p>
+                <p className="text-xs font-medium text-foreground mb-4">Atividade</p>
                 <div className="space-y-3">
                   {opp.activities.map((act) => (
                     <ActivityItem key={act.id} activity={act} />
@@ -328,8 +328,8 @@ export default function OpportunityDetailModal({
                       <Plus className="h-3 w-3" />
                     </div>
                     <div>
-                      <p className="text-xs text-zinc-300">Oportunidade criada</p>
-                      <p className="text-xs text-zinc-400 mt-0.5">{formatRelativeTime(opp.createdAt)}</p>
+                      <p className="text-xs text-foreground">Oportunidade criada</p>
+                      <p className="text-xs text-muted-foreground mt-0.5">{formatRelativeTime(opp.createdAt)}</p>
                     </div>
                   </div>
                 </div>
@@ -345,7 +345,7 @@ export default function OpportunityDetailModal({
 function FieldRow({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="flex items-center gap-3">
-      <span className="w-20 text-xs text-zinc-300 shrink-0">{label}</span>
+      <span className="w-20 text-xs text-muted-foreground shrink-0">{label}</span>
       {children}
     </div>
   )
@@ -386,7 +386,7 @@ function EditableText({
             setDraft(value)
           }
         }}
-        className={cn(className, 'bg-zinc-600 border border-primary/50 rounded px-2 py-0.5 outline-none w-full')}
+        className={cn(className, 'bg-gray-50 dark:bg-zinc-600 border border-primary/50 rounded px-2 py-0.5 outline-none w-full')}
       />
     )
   }
@@ -399,8 +399,8 @@ function EditableText({
       }}
       className={cn(
         className,
-        'text-left hover:bg-white/5 rounded px-2 py-0.5 transition-colors w-full',
-        !value && 'text-zinc-400',
+        'text-left hover:bg-black/5 dark:hover:bg-white/5 rounded px-2 py-0.5 transition-colors w-full',
+        !value && 'text-muted-foreground',
       )}
     >
       {value || placeholder}
@@ -442,7 +442,7 @@ function EditableNumber({
           if (e.key === 'Escape') setEditing(false)
         }}
         placeholder="0,00"
-        className="flex-1 bg-zinc-600 border border-primary/50 rounded px-2 py-0.5 text-sm text-white outline-none"
+        className="flex-1 bg-gray-50 dark:bg-zinc-600 border border-primary/50 rounded px-2 py-0.5 text-sm text-foreground outline-none"
       />
     )
   }
@@ -453,12 +453,12 @@ function EditableNumber({
         setDraft(value !== null ? String(value) : '')
         setEditing(true)
       }}
-      className="flex-1 text-left text-sm hover:bg-white/5 rounded px-2 py-0.5 transition-colors"
+      className="flex-1 text-left text-sm hover:bg-black/5 dark:hover:bg-white/5 rounded px-2 py-0.5 transition-colors"
     >
       {value !== null && value > 0 ? (
-        <span className="text-emerald-400 font-medium">{formatCurrency(value)}</span>
+        <span className="text-emerald-600 dark:text-emerald-400 font-medium">{formatCurrency(value)}</span>
       ) : (
-        <span className="text-zinc-400">Adicionar valor</span>
+        <span className="text-muted-foreground">Adicionar valor</span>
       )}
     </button>
   )
@@ -468,21 +468,21 @@ function ActivityItem({ activity }: { activity: Activity }) {
   const config: Record<string, { icon: React.ReactNode; color: string }> = {
     STAGE_CHANGED: {
       icon: <ArrowRight className="h-3 w-3" />,
-      color: 'bg-blue-500/20 text-blue-400',
+      color: 'bg-blue-500/20 text-blue-600 dark:text-blue-400',
     },
     STATUS_CHANGED: {
       icon: <CheckCircle2 className="h-3 w-3" />,
-      color: 'bg-emerald-500/20 text-emerald-400',
+      color: 'bg-emerald-500/20 text-emerald-600 dark:text-emerald-400',
     },
     NOTE_ADDED: {
       icon: <MessageSquare className="h-3 w-3" />,
-      color: 'bg-zinc-600 text-zinc-200',
+      color: 'bg-muted text-muted-foreground',
     },
   }
 
   const { icon, color } = config[activity.type] ?? {
     icon: <MessageSquare className="h-3 w-3" />,
-    color: 'bg-zinc-600 text-zinc-200',
+    color: 'bg-muted text-muted-foreground',
   }
 
   return (
@@ -496,8 +496,8 @@ function ActivityItem({ activity }: { activity: Activity }) {
         {icon}
       </div>
       <div className="flex-1 min-w-0">
-        <p className="text-xs text-zinc-300 leading-snug">{activity.content}</p>
-        <p className="text-xs text-zinc-400 mt-0.5">
+        <p className="text-xs text-foreground leading-snug">{activity.content}</p>
+        <p className="text-xs text-muted-foreground mt-0.5">
           {activity.user?.name && <span>{activity.user.name} · </span>}
           {formatRelativeTime(activity.createdAt)}
         </p>

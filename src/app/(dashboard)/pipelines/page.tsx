@@ -102,26 +102,26 @@ export default function PipelinesPage() {
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
           onClick={(e) => e.target === e.currentTarget && setShowModal(false)}
         >
-          <div className="w-full max-w-sm rounded-xl bg-zinc-900 border border-white/10 shadow-2xl">
-            <div className="flex items-center justify-between p-5 border-b border-white/10">
-              <h2 className="text-base font-semibold text-white">Novo pipeline</h2>
-              <button onClick={() => setShowModal(false)} className="text-zinc-400 hover:text-white">
+          <div className="w-full max-w-sm rounded-xl bg-card border border-border shadow-2xl">
+            <div className="flex items-center justify-between p-5 border-b border-border">
+              <h2 className="text-base font-semibold text-foreground">Novo pipeline</h2>
+              <button onClick={() => setShowModal(false)} className="text-muted-foreground hover:text-foreground">
                 <X className="h-5 w-5" />
               </button>
             </div>
             <form onSubmit={handleCreate} className="p-5 space-y-4">
               <div className="space-y-1.5">
-                <Label className="text-zinc-300">Nome do pipeline</Label>
+                <Label className="text-foreground">Nome do pipeline</Label>
                 <Input
                   autoFocus
                   placeholder="Ex: Vendas B2B"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   required
-                  className="bg-zinc-800 border-white/10 text-white placeholder:text-zinc-500"
+                  className="bg-background border-border text-foreground placeholder:text-muted-foreground"
                 />
               </div>
-              <p className="text-xs text-zinc-500">
+              <p className="text-xs text-muted-foreground">
                 Criado com 4 etapas padrão: Prospecção, Qualificação, Proposta e Fechado.
               </p>
               {error && <p className="text-sm text-red-400">{error}</p>}
@@ -129,7 +129,7 @@ export default function PipelinesPage() {
                 <Button
                   type="button"
                   variant="outline"
-                  className="flex-1 border-white/10 text-zinc-300 hover:bg-white/5"
+                  className="flex-1 border-border text-muted-foreground hover:bg-muted"
                   onClick={() => setShowModal(false)}
                 >
                   Cancelar
