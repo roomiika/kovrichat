@@ -4,8 +4,9 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import Image from 'next/image'
 import { signOut } from 'next-auth/react'
-import { LayoutDashboard, Users, GitBranch, MessageSquare, Settings, LogOut } from 'lucide-react'
+import { LayoutDashboard, Users, GitBranch, MessageSquare, Settings, LogOut, Sun, Moon } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useTheme } from './ThemeProvider'
 
 const navItems = [
   { href: '/', label: 'Dashboard', icon: LayoutDashboard, exact: true },
@@ -20,6 +21,7 @@ const bottomItems = [
 
 export function Sidebar() {
   const pathname = usePathname()
+  const { theme, toggle } = useTheme()
 
   return (
     <aside className="flex flex-col w-[220px] min-h-screen bg-sidebar border-r border-sidebar-border shrink-0">
@@ -65,6 +67,13 @@ export function Sidebar() {
             {label}
           </Link>
         ))}
+        <button
+          onClick={toggle}
+          className="flex items-center gap-3 px-3 py-2 rounded-md text-sm text-muted-foreground hover:bg-accent hover:text-sidebar-foreground transition-colors w-full text-left"
+        >
+          {theme === 'dark' ? <Sun className="h-4 w-4 shrink-0" /> : <Moon className="h-4 w-4 shrink-0" />}
+          {theme === 'dark' ? 'Tema claro' : 'Tema escuro'}
+        </button>
         <button
           onClick={() => signOut({ callbackUrl: '/login' })}
           className="flex items-center gap-3 px-3 py-2 rounded-md text-sm text-muted-foreground hover:bg-accent hover:text-sidebar-foreground transition-colors w-full text-left"
