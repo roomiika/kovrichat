@@ -38,7 +38,7 @@ type OppDetail = {
 interface Props {
   opportunityId: string
   pipelineId: string
-  stages: KanbanStage[]
+  stages?: KanbanStage[]
   onClose: () => void
   onDeleted: (id: string) => void
 }
@@ -46,7 +46,7 @@ interface Props {
 export default function OpportunityDetailModal({
   opportunityId,
   pipelineId,
-  stages,
+  stages: stagesProp,
   onClose,
   onDeleted,
 }: Props) {
@@ -59,6 +59,14 @@ export default function OpportunityDetailModal({
     queryKey: ['opportunity', opportunityId],
     queryFn: () => fetch(`/api/opportunities/${opportunityId}`).then((r) => r.json()),
   })
+
+  const { data: pipelineData } = useQuery({
+    queryKey: ['pipeline', pipelineId],
+    queryFn: () => fetch(`/api/pipelines/${pipelineId}`).then((r) => r.json()),
+    enabled: !stagesProp,
+  })
+
+  const stages: KanbanStage[] = stagesProp ?? pipelineData?.stages ?? []
 
   const patch = useMutation({
     mutationFn: (body: Record<string, unknown>) =>
@@ -83,6 +91,19 @@ export default function OpportunityDetailModal({
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['pipeline', pipelineId] })
       onClose()
+    },
+  })
+
+  const reopenMutation = useMutation({
+    mutationFn: () =>
+      fetch(`/api/opportunities/${opportunityId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: 'OPEN' }),
+      }).then((r) => r.json()),
+    onSuccess: (updated) => {
+      qc.setQueryData(['opportunity', opportunityId], updated)
+      qc.invalidateQueries({ queryKey: ['pipeline', pipelineId] })
     },
   })
 
@@ -161,16 +182,25 @@ export default function OpportunityDetailModal({
                 )}
 
                 {opp.status !== 'OPEN' && (
-                  <span
-                    className={cn(
-                      'rounded-full px-2.5 py-1 text-xs font-medium',
-                      opp.status === 'WON'
-                        ? 'bg-emerald-500/15 text-emerald-400'
-                        : 'bg-red-500/15 text-red-400',
-                    )}
-                  >
-                    {opp.status === 'WON' ? 'Ganho' : 'Perdido'}
-                  </span>
+                  <>
+                    <span
+                      className={cn(
+                        'rounded-full px-2.5 py-1 text-xs font-medium',
+                        opp.status === 'WON'
+                          ? 'bg-emerald-500/15 text-emerald-400'
+                          : 'bg-red-500/15 text-red-400',
+                      )}
+                    >
+                      {opp.status === 'WON' ? 'Ganho' : 'Perdido'}
+                    </span>
+                    <button
+                      onClick={() => reopenMutation.mutate()}
+                      disabled={reopenMutation.isPending}
+                      className="flex items-center gap-1.5 rounded-lg bg-zinc-700 px-2.5 py-1.5 text-xs font-medium text-zinc-300 hover:bg-zinc-600 transition-colors disabled:opacity-50"
+                    >
+                      Reabrir
+                    </button>
+                  </>
                 )}
 
                 <button
@@ -299,7 +329,7 @@ export default function OpportunityDetailModal({
                     </div>
                     <div>
                       <p className="text-xs text-zinc-300">Oportunidade criada</p>
-                      <p className="text-xs text-zinc-600 mt-0.5">{formatRelativeTime(opp.createdAt)}</p>
+                      <p className="text-xs text-zinc-400 mt-0.5">{formatRelativeTime(opp.createdAt)}</p>
                     </div>
                   </div>
                 </div>
@@ -467,7 +497,7 @@ function ActivityItem({ activity }: { activity: Activity }) {
       </div>
       <div className="flex-1 min-w-0">
         <p className="text-xs text-zinc-300 leading-snug">{activity.content}</p>
-        <p className="text-xs text-zinc-600 mt-0.5">
+        <p className="text-xs text-zinc-400 mt-0.5">
           {activity.user?.name && <span>{activity.user.name} · </span>}
           {formatRelativeTime(activity.createdAt)}
         </p>

@@ -70,8 +70,9 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
       data: {
         ...rest,
         ...(status && { status }),
-        ...(status === 'WON' && { wonAt: new Date() }),
-        ...(status === 'LOST' && { lostAt: new Date() }),
+        ...(status === 'WON' && { wonAt: new Date(), lostAt: null }),
+        ...(status === 'LOST' && { lostAt: new Date(), wonAt: null }),
+        ...(status === 'OPEN' && { wonAt: null, lostAt: null }),
         ...(rest.stageId && rest.stageId !== opp.stageId && { stageEnteredAt: new Date() }),
       },
     })

@@ -10,7 +10,7 @@ import { cn, formatCurrency } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import Link from 'next/link'
+import OpportunityDetailModal from '@/components/kanban/OpportunityDetailModal'
 
 type Contact = {
   id: string
@@ -271,6 +271,8 @@ function ContactDetailPanel({
 }) {
   const qc = useQueryClient()
 
+  const [detailOpp, setDetailOpp] = useState<{ id: string; pipelineId: string } | null>(null)
+
   const { data, isLoading } = useQuery<ContactDetail>({
     queryKey: ['contact', contactId],
     queryFn: () => fetch(`/api/contacts/${contactId}`).then((r) => r.json()),
@@ -299,6 +301,7 @@ function ContactDetailPanel({
   }
 
   return (
+    <>
     <div className="fixed inset-0 z-50 flex justify-end">
       <div className="absolute inset-0 bg-black/30" onClick={onClose} />
       <div className="relative z-10 flex flex-col w-full max-w-md bg-zinc-950 border-l border-white/10 h-full">
@@ -350,23 +353,25 @@ function ContactDetailPanel({
                 ) : (
                   <div className="space-y-2">
                     {data.opportunities.map((opp) => (
-                      <Link key={opp.id} href={`/pipelines/${opp.pipeline.id}`}>
-                        <div className="flex items-center gap-3 rounded-lg bg-zinc-900 border border-white/5 px-3 py-2.5 hover:border-white/15 transition-colors">
-                          <StatusIcon status={opp.status} />
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-white truncate">{opp.title}</p>
-                            <div className="flex items-center gap-2 mt-0.5">
-                              <span className="h-1.5 w-1.5 rounded-full shrink-0" style={{ backgroundColor: opp.stage.color }} />
-                              <span className="text-xs text-zinc-500 truncate">{opp.pipeline.name} · {opp.stage.name}</span>
-                            </div>
+                      <button
+                        key={opp.id}
+                        onClick={() => setDetailOpp({ id: opp.id, pipelineId: opp.pipeline.id })}
+                        className="flex items-center gap-3 rounded-lg bg-zinc-900 border border-white/5 px-3 py-2.5 hover:border-white/15 transition-colors w-full text-left"
+                      >
+                        <StatusIcon status={opp.status} />
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium text-white truncate">{opp.title}</p>
+                          <div className="flex items-center gap-2 mt-0.5">
+                            <span className="h-1.5 w-1.5 rounded-full shrink-0" style={{ backgroundColor: opp.stage.color }} />
+                            <span className="text-xs text-zinc-500 truncate">{opp.pipeline.name} · {opp.stage.name}</span>
                           </div>
-                          {opp.value && Number(opp.value) > 0 && (
-                            <span className="text-xs font-semibold text-emerald-400 shrink-0">
-                              {formatCurrency(Number(opp.value))}
-                            </span>
-                          )}
                         </div>
-                      </Link>
+                        {opp.value && Number(opp.value) > 0 && (
+                          <span className="text-xs font-semibold text-emerald-400 shrink-0">
+                            {formatCurrency(Number(opp.value))}
+                          </span>
+                        )}
+                      </button>
                     ))}
                   </div>
                 )}
@@ -376,6 +381,19 @@ function ContactDetailPanel({
         )}
       </div>
     </div>
+
+    {detailOpp && (
+      <OpportunityDetailModal
+        opportunityId={detailOpp.id}
+        pipelineId={detailOpp.pipelineId}
+        onClose={() => setDetailOpp(null)}
+        onDeleted={() => {
+          setDetailOpp(null)
+          qc.invalidateQueries({ queryKey: ['contact', contactId] })
+        }}
+      />
+    )}
+    </>
   )
 }
 
